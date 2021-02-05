@@ -29,6 +29,8 @@ import aioblescan as aiobs
 from aioblescan.plugins import EddyStone
 from aioblescan.plugins import RuuviWeather
 from aioblescan.plugins import BlueMaestro
+from aioblescan.plugins import Tilt
+from aioblescan.plugins import Act
 
 
 def check_mac(val):
@@ -48,6 +50,10 @@ parser.add_argument("-r","--ruuvi", action='store_true', default=False,
                     help="Look only for Ruuvi tag Weather station messages")
 parser.add_argument("-p","--pebble", action='store_true', default=False,
                     help="Look only for Pebble Environment Monitor")
+parser.add_argument("-T","--tilt", action='store_true', default=False,
+                    help="Look only for Tilt.")
+parser.add_argument("-A","--act", action='store_true', default=False,
+                    help="Look only for Mijia Sensor with ACT Firmware.")
 parser.add_argument("-R","--raw", action='store_true', default=False,
                     help="Also show the raw data.")
 parser.add_argument("-a","--advertise", type= int, default=0,
@@ -93,6 +99,14 @@ def my_process(data):
         xx=BlueMaestro().decode(ev)
         if xx:
             print("Pebble info {}".format(xx))
+    elif opts.tilt:
+        xx=Tilt().decode(ev)
+        if xx:
+            print("{}".format(xx))
+    elif opts.act:
+        xx=Act().decode(ev)
+        if xx:
+            print("{}".format(xx))
     else:
         ev.show(0)
 
